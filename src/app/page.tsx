@@ -15,7 +15,15 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import EquiposModule from '../../componets/EquiposModule';
+import UbicacionesModule from '../../componets/UbicacionesModule';
+import UsuariosModule from '../../componets/UsuariosModule';
+import MantenimientosModule from '../../componets/MantenimientosModule';
+import PrestamosModule from '../../componets/PrestamosModule';
+import ReportesModule from '../../componets/ReportesModule';
 
+
+// Ancho del Drawer
 const drawerWidth = 240;
 
 // Define tu paleta personalizada
@@ -34,12 +42,19 @@ const theme = createTheme({
 });
 
 const navItems = [
-  { text: 'Categorias', icon: <FolderIcon /> },
-  { text: 'Comprar', icon: <DescriptionIcon /> },
-  { text: 'Inventario', icon: <DescriptionIcon /> },
+  { key: 'equipos', text: 'Equipos', icon: <FolderIcon /> },
+  { key: 'ubicaciones', text: 'Ubicaciones', icon: <DescriptionIcon /> },
+  { key: 'usuarios', text: 'Usuarios', icon: <DescriptionIcon /> },
+  { key: 'mantenimientos', text: 'Mantenimientos', icon: <DescriptionIcon /> },
+  { key: 'prestamos', text: 'Préstamos', icon: <DescriptionIcon /> },
+  { key: 'reportes', text: 'Reportes', icon: <DescriptionIcon /> },
 ];
 
 export default function DashboardPage() {
+  const [selected, setSelected] = React.useState('equipos');
+  // Simulación de usuario logueado
+  const [user, setUser] = React.useState({ rol: 'admin', nombre: 'Admin UwU' }); // o 'consulta'
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -75,8 +90,12 @@ export default function DashboardPage() {
           <Toolbar />
           <List>
             {navItems.map((item) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton sx={{ color: 'primary.contrastText' }}>
+              <ListItem key={item.key} disablePadding>
+                <ListItemButton
+                  selected={selected === item.key}
+                  onClick={() => setSelected(item.key)}
+                  sx={{ color: 'primary.contrastText' }}
+                >
                   <ListItemIcon sx={{ color: 'primary.contrastText' }}>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />
                 </ListItemButton>
@@ -84,10 +103,17 @@ export default function DashboardPage() {
             ))}
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, ml: `${drawerWidth}px` }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
-          <Typography variant="h4">Bienvenido al dashboard UwU</Typography>
-          <Typography>Selecciona una opción del menú.</Typography>
+          <Typography variant="h4" gutterBottom>
+            Bienvenido, {user.nombre}
+          </Typography>
+          {selected === 'equipos' && <EquiposModule user={user} />}
+          {selected === 'ubicaciones' && <UbicacionesModule user={user} />}
+          {selected === 'usuarios' && <UsuariosModule user={user} />}
+          {selected === 'mantenimientos' && <MantenimientosModule user={user} />}
+          {selected === 'prestamos' && <PrestamosModule user={user} />}
+          {selected === 'reportes' && <ReportesModule user={user} />}
         </Box>
       </Box>
     </ThemeProvider>
