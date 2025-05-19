@@ -9,24 +9,24 @@ datasource db {
 }
 
 model Equipo {
-  id_equipo         Int             @id @default(autoincrement())
-  nombre_equipo     String
-  tipo_equipo       String
-  marca             String
-  modelo            String
-  numero_serie      String
+  id_equipo        Int           @id @default(autoincrement())
+  nombre_equipo    String
+  tipo_equipo      String
+  marca            String
+  modelo           String
+  numero_serie     String
   sistema_operativo String
-  procesador        String
-  ram               String
-  disco_duro        String
-  fecha_compra      DateTime
-  estado            String
-  id_ubicacion      Int
-  id_usuario        Int
-  ubicacion         Ubicacion       @relation(fields: [id_ubicacion], references: [id_ubicacion])
-  usuario           Usuario         @relation(fields: [id_usuario], references: [id_usuario])
-  mantenimientos    Mantenimiento[]
-  prestamos         Prestamo[]
+  procesador       String
+  ram              String
+  disco_duro       String
+  fecha_compra     DateTime
+  estado           String
+  id_ubicacion     Int
+  ubicacion        Ubicacion     @relation(fields: [id_ubicacion], references: [id_ubicacion])
+  id_usuario       Int
+  usuario          Usuario       @relation(fields: [id_usuario], references: [id_usuario])
+  mantenimientos   Mantenimiento[]
+  prestamos        Prestamo[]
 }
 
 model Ubicacion {
@@ -38,7 +38,7 @@ model Ubicacion {
 }
 
 model Usuario {
-  id_usuario   Int        @id @default(autoincrement())
+  id_usuario   Int      @id @default(autoincrement())
   nombre       String
   correo       String
   departamento String
@@ -49,21 +49,21 @@ model Usuario {
 
 model Mantenimiento {
   id_mantenimiento Int      @id @default(autoincrement())
-  id_equipo        Int
-  tipo             String
-  descripcion      String
-  fecha            DateTime
-  tecnico          String
-  equipo           Equipo   @relation(fields: [id_equipo], references: [id_equipo])
+  id_equipo       Int
+  equipo          Equipo    @relation(fields: [id_equipo], references: [id_equipo])
+  tipo            String
+  descripcion     String
+  fecha           DateTime
+  tecnico         String
 }
 
 model Prestamo {
   id_prestamo      Int      @id @default(autoincrement())
   id_equipo        Int
+  equipo           Equipo   @relation(fields: [id_equipo], references: [id_equipo])
   id_usuario       Int
+  usuario          Usuario  @relation(fields: [id_usuario], references: [id_usuario])
   fecha_prestamo   DateTime
   fecha_devolucion DateTime
   estado           String
-  equipo           Equipo   @relation(fields: [id_equipo], references: [id_equipo])
-  usuario          Usuario  @relation(fields: [id_usuario], references: [id_usuario])
 }
